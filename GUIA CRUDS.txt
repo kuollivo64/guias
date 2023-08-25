@@ -1,0 +1,447 @@
+ENTENDI QUE EN LAS PRUEBAS TECNICAS SOLO INPORTA EL FUNCIONAMIENTO PERO NO LA IMAGEN
+OSEA ENTIENDE QUE SE NECESITA QUE FUNCIONE Y LA VERDAD HAY QUE CREAR UN PLAN MAS RAPID
+PARA PODER CREAR LOS CRUD's EN ESE CASO EL MAS FACIL AL PARECER ES EL .net 
+CON ENTITE FRAMEWOKR ENTONCES AHORA COMIENZA LO MAS RUDO Y MAS DURA HACER EN 1 HORA
+Y DE AHI TRABAJARLO A MENOS DE 3O MIN CABE RECALCAR QUE ESTE PUEDE VARIAR CON LOS 
+EQUIPOS QUE SE CUENTAN Y DE SUS VIRTUDES ENTONCES AHORA NOS QUEDA TENER O HACER
+UNA GUIA PARA PODER REALIZAR ESTE TIPO DE PRUEBAS EN MENOS TIEMPO POSIBLE COMENZANDO 
+CON TRABAJAR CON LAS TECNOLOGIAS QUE YA CONOCEMOS SIN LA NECESIDAD DE TENER WUACHOS
+O TRAMPAS POR AHI EN ESE ASPECTO COMNEZAREMOS CON LAS GUIAS EN ESTAS TECNOLOGIAS QUE 
+NOS GARANTICEN APROBAR LAS PRUEBAS TECNICAS EN CUALQUIER CIRCUNSTANCIA ENTONCES
+COMENZEMOS EN ESTE ASPECTO NOSOTROS CON LAS TECNOLOGIAS QUE YA CONOCEMOS 
+
+CRUD 1 GUIA RAPIDA REACTJS CON NODEJS EXPRESS
+
+CRUD 2 GUIA RAPIDA VUEJS CON NODEJS EXPRESS
+
+CRUD 3 GUIA RAPIDA ANGULAR CON NODEJS EXPRESS
+
+CRUD 3 GUIA RAPIDA .NET CORE BACK-FRONT
+
+CRUD 4 GUIA RAPIDA JAVA SPRING BOOT BACK-FRONT
+
+CRUD 5 GUIA RAPIDA CON JAVASCRIPT
+
+CRUD 6 GUIA RAPIDA CON PHP
+
+EN TOTAL TENEMOS 6 GUIAS QUE HACER TENIENDO EN MENTE QUE SOLO USAREMOS BOOSTRAP YA
+QUE ES MAS FACIL PARA NOSTROS Y TAMBIEN YA QUE ES MAS FACIL PARA NOSOTROS 
+AHORA TENER EN CUENTA QUE ESTOS CRUD's DEBEN SER SENCILLOS PERO NO TAN LABURIOSOS 
+TEN EN CUENTA QUE DEBES DE PODER TERMINAR LA PRUEBA EN EL TIEMPO MAS CORTO POSIBLE
+EN MAXIMO UNA HORA PERO NO MAS ARRIBA AHORA ESTO NOS AYUDARA A QUE TERMINEMOS EN EL
+TIEMPO MAS MENOR POSIBLE OSEA QUE LLEGUEMOS A TERMINARLO EN 30 MINUTOS COMO MAXIMO
+PERO VAMOS POCO A POCO 
+AHORA PARA MUCHOS DE NUESTROS TRABAJOS TE RECOMIENDO TRABAJAR CON VISUAL STUDIO CODE 
+LOS IDES SON BUENOS PERO TEN EN MENTE QUE ESTOS TARDAN DEMASIADO Y ESTO PERJUDICA NUESTRO
+TRABAJO ENTONCES AHORA NOSOTROS NECESITAMOS TRABAJAR CON LAS HERRAMIENTAS QUE TE PERMITAN
+OPTIMIZAR EL TIEMPO COMO SHOURKOTS Y TAMBIEN DOMINAR LAS LINEAS DE COMANDO PARA ALGUNAS
+ENTONCES LO PRIMERO TENER PERFILES PARA CADA TIPO DE LENGUAJES EN ESE ASPECTO
+ ENTONCES COMENZEMOS CON ESTO ESTAS GUIAS SON NECESARIAS PARA PODER TENER UN MEJOR TRABAJO
+RECUENTRA QUE AL MANEJAR LOS FORMS Y TODO LOS TIPOS DE INPUTS COMO LOS MAS IMPORTANTES
+TEXT
+NUMBER
+DATE
+BOOL
+ESTOS SON LOS MAS IMPORTANTES EN RELACION A LOS FORMS ENTONCES MANOS A LA OBRA COMENZEMOS CON
+LA PRIMERA GUIA 
+
+
+CRUD 1 GUIA RAPIDA REACTJS CON NODEJS EXPRESS
+PRIMERO TEN EN CUENTA QUE LA PARTE DEL BACK SE LO TIENE QUE HACER APARTE 
+ENTONCES NOSOTROS NECESITAMOS PRIMERO ENTENEDER QUE PODEMOS USAR BUENAS TECNICAS
+PERO ESTAS NO NOS AYUDAN YA QUE REQUIEREN MAS TIEMPO CON RELACION A LA PRUEBA Y EL TIEMPO
+ENTONCES EN ESE ASPECTO ENTENDER QUE ES LO MAS IMPORTANTE 
+* Conexion a la base de datos 
+* cors
+* modelo de datos
+*end points principales CREATE, READ, UPDATE and DELETE 
+entonces comenzemos
+
+comenzemos creando una carpeta para el proyecto recomendable que este sea de facil acceso
+para poder ganar tiempo en nodejs podemos ejecutar dos tipos de comando 
+NPM o YARN en lo personal YARN es mucho mas rapido que NPM pero por defecto NPM 
+siempre se encuentra listo entonces dedicate a NPM si es que no tienes YARN pero si 
+deseas saber si lo tienes debes ejecutar lo primero
+
+npm --version
+yarn --version
+
+en mi caso yo tengo ambos pero pensemos que no tenemos yarn y solo tenemos por defecto yarn
+
+en ese caso primero ejecutamos NPM INIT -Y para tener nuestro package.json que es
+el corazon de nuestra aplicacion ahi ahora trabajaremos lo principal que es los 
+paquetes para nuestra app como ser 
+sequelize
+pg
+pg-hstore
+dotenv
+express
+short-unique-id
+
+despues instalamos nodemon para el auto refresh con 
+npm i nodemon -D 
+
+ahora no te olvides crear el index.js y agregar los script dentro del package.json
+
+const express = require("express")
+require("dotenv").config()
+const PORT = 5051
+const app = express();
+
+app.listen( PORT, () => {
+   console.log("SERVER ONLINE")
+})
+
+dentro del package.json agregamos lo que es el comand dev
+
+dentro del scrtipts
+
+"dev": "nodemon index.js"
+
+y luego ejecutamos nuesto comando
+
+npm run dev
+
+con esto nuestro server ya esta en linea 
+
+ahora tenemos que hacer la conexccion para la bd en este aspecto nosotros necesitamos
+tener en mente lo que es el uso de variables de entorno que es recomendable para este 
+paso asi que comenzemos 
+
+nos creamos una archivo config.js y uno .env
+en este caso trabajare con POSTGRESQL 
+config.js
+ahi importamos sequelize
+
+import { Sequelize } = requiere("sequelize")
+
+const sequelize = new Sequelize(
+    process.env.DATABASE_NAME,
+    process.env.DATABASE_USER,
+    process.env.DATABASE_PASS,
+    {
+        host: process.env.DATABASE_HOST,
+        dialect: process.env.DATABASE_DIALECT,
+        port: process.env.DATABASE_PORT,
+        logging: false
+    }
+)
+
+const dbConnection = async () => {
+     try{
+    	await sequelize.sync({ force: false })		 
+	console.log("DB CONECTADA")
+     }catch(error){
+     	console.log("error")
+     }
+}
+
+ahora estas variables se que son raras pero en ese caso te los explico
+en nuesto caso las variables de entorno nos ayudaran a poder trabajarlas 
+mas rapidas y ordenadas en este caso nuestras varaibles son 7 pero esenciales
+para la conexccion a la base de datos el dialect es la base de datos que podemos
+usar ya sea postgres, mysql u otro
+
+DATABASE_NAME = 'guia1'
+DATABASE_USER = 'postgres'
+DATABASE_SCHEMA = 'public'
+DATABASE_PASS = 'jesus'
+DATABASE_HOST = 'localhost'
+DATABASE_DIALECT = 'postgres'
+DATABASE_PORT = 5432
+
+entonces con todo esto configura en teoria tenemos que tener la app conectada
+NOTA: debes primero crear una base de datos esto no es dificil por comando o por
+interfaz sirve cualquier forma
+
+comando "create database guia1"
+
+
+ahora comenzemos con los datos a tener en nuestra app o el crud que se nos pide
+para este ejemplo nosotros usaremos los campos que posiblemente nos den 
+en nuestro caso usaremos los mas posibles
+
+nombre string
+apellido string
+sueldo number
+fecha_contratacion date
+activo boolean
+
+para esto nos creamos un archivo modelo.js
+dentro del modelo 
+
+const { DataTypes} = require("sequelize")
+const { sequelize } = require("./config")
+require("dotenv").config()
+const Empleado = sequelize.define( "empleado", {
+ui: {
+type: DataTypes.STRING,
+primaryKey: true
+},
+nombre:{
+type: DataTypes.STRING,
+},
+apellido:{
+type: DataTypes.STRING,
+},
+sueldo:{
+type: DataTypes.DOUBLE,
+},
+fecha_contratacion:{
+type: DataTypes.DATE,
+},
+activo:{
+type: DataTypes.BOOLEAN,
+},
+}, {
+   timestamps: false,
+   schema: process.env.DATABASE_SCHEMA,
+   table: 'empleado'
+})
+
+module.exports = {
+  Empleado
+}
+
+
+ahora con esto ya configuramos nuestro modelo empleado
+en este caso nosotros nos vamos directamente a lo que es los endopoints
+
+get, post, put, delete
+
+en el index.js
+
+para esto es facil solo usamos app seguidos de los metodos pero antes nostros usamos
+uuid dentro de app
+
+const uuid = require("short-unique-ui")
+const id = new uuid();
+
+app.get("/", (req, res) => {
+
+const empleado = Empleado.findAll( { where:{ active: true } } )
+res.json(empleado)
+
+})
+
+app.post("/", (req, res) => {
+
+const empleado = new Empleado({ ui: id, ...req.body })
+empleado.save();
+res.json(empleado)
+})
+
+app.put("/:id", (req, res) => {
+const ui = req.params.id
+const body = req.body
+let empleado = Empleado.findOne({ where:{ ui: ui, active: true } })
+empleado.update(body)
+res.json(empleado)
+})
+
+app.delete("/:id", (req, res) => {
+const ui = req.params.id
+let empleado = Empleado.findOne({ where:{ ui: ui, active: true } })
+empleado.update({ active: false })
+res.json(empleado)
+})
+
+
+y con esto ya estaria todo en resumen con estos pasos podemos crear una api en menos
+tiempo posible obviando un detalle que es la configuracion CORS
+
+que ahora lo haremos
+
+para la configuracion de cors hay dos pasos usar el paquete CORS de node js o configurarla 
+por uno mismo en nuestro caso es mas recomendable configurar por paquete ya que en esos momentos 
+no tendremos tiempo para configurarla por nuestra propia cuenta entonces instalamos el paquete 
+
+npm install cors
+
+lo importamos dentro de nuestro index.js
+const cors = require("cors")
+app.use(cors())
+
+
+y listo con esto ya esta la primera parte de back end pero ahora tenemos que probar 
+si todo esta bien
+
+para eso usaremos restbook que es una extension muy buena para estos pasos y asi
+no abrir lo que es postman que tardan mucho y hace que tu pc este lenta pero tambien
+hay otras alternativas y esto depende mucho de ti y de tu experticia
+
+ahora con nuestro servicio ya terminado nosotros debemos de hacer nuestro front end para lo
+cual usaremos reactjs con vite como empaquetador entonces manos a la obra
+
+primero creamos nuestro app reactjs con el comando
+
+npm create vite 
+
+escogemos reactjs anuque puedes tambien usar TS pero en nuestro caso solo JS
+
+le damos un nombre y listo 
+
+luego entramos a la carpeta y ejecutamos
+npm i
+
+luego instalamos lo necesario para poder realizar el consumo de nuestra api donde usaremos 
+axios para poder consumir lo que es nuestros servicios previamente creados
+
+entonces ejecutamos los siguientes tambien instalamos moment para el formato de las fechas
+
+npm i axios moment
+
+ahora tenemos lo necesario para hacer nuestro front
+
+primero como dijimos usaremos bootstrap 5 para lo cual lo mas facil es 
+entrar a la pagina web y copias los paths de css y js los mismos se copian 
+en el index.html 
+
+luego nos instalaremos la extension de bootstrap 5 que nos ayudar a crear los 
+forms mas rapidos con los snipers con la sintaxis 
+
+b5-form-input
+
+ahora estamos listos en este aspecto
+
+en este aspecto lo maximo que puedes tardar es en crear los estados y los evento 
+pero los mismo no deverian ser un problema
+
+ahora lo mas importante primeramente al crear los forms crear los metodos que son 4
+
+onSubmit = () => {
+  
+}
+onUpdate = (empleado) => {
+
+}
+onDelete = (id) => {
+
+}
+onCancel = () => {
+
+}
+
+ademas de crear los sigueinte estados 
+
+const [accionEvent, setaccionEvent] = useState(true);
+const [idEmpleado, setidEmpleado] = useState("");
+const [empleado, setempleado] = useState({
+    nombre: "",
+  apellido: "",
+  sueldo: "",
+  fecha_contratacion: "",
+});
+
+y para los inputs nosotros necesitamos crear un metodo para poder recuperar todos
+los datos del form 
+
+
+const onChange = (e) => {
+  setempleado({
+    ...,
+    [e.target.name]: e.target.value
+  })
+}
+
+este lo ponemos en todos los input en la funcion onChange
+
+
+ahora nosotros debemos tener 3 botonoes uno submit 
+
+<button type="submit" class="btn btn-primary">Agregar</button>
+
+este debe estar dentro del form 
+
+ahora nosotros para que esto sea mas facil manejararemos un estado 
+accionEvent
+
+y manejaremos en true agregar y false guardar y cancelar ahora con esos metodos 
+en los inputs no te olvides cambienar los ID y los NAME de las etiquetas inputs
+
+y con esos tenemos todo lo neceasrio por parte de los FORMS
+
+ahora nos encargamos de los services con axios asi que a darle 
+
+import axios from "axios";
+
+const API = "http://localhost:5051/api";
+const svc_empleado = axios.create({ baseURL: API })
+
+export const getEmpleado = async () => {
+    const res = await svc_empleado.get("empleado")
+    return res.data
+}
+
+export const postEmpleado = async (empleado) => {
+    const res = await svc_empleado.post("empleado", empleado)
+    return res.data
+}
+
+export const putEmpleado = async (id, empleado) => {
+    const res = await svc_empleado.put(`empleado/${id}`, empleado)
+    return res.data
+}
+
+export const deleteEmpleado = async (id) => {
+    const res = await svc_empleado.delete(`empleado/${id}`)
+    return res.data
+}
+
+de ahi nos creamos un hook useEmpleado que nos ayudara a poder 
+controlar el estado de la lista de empleados
+
+export const EmpleadoHook = () => {
+  const [isLoading, setisLoading] = useState(true);
+  const [EmpleadoData, setEmpleadoData] = useState([]);
+
+  useEffect(() => {
+    getEmpleado()
+      .then((r) => {
+        setEmpleadoData(r);
+        setisLoading(false)
+      })
+      .catch((e) => {
+        setEmpleadoData([]);
+        setisLoading(false)
+      });
+  }, []);
+
+  return {
+    isLoading,
+    EmpleadoData,
+    setEmpleadoData
+  };
+};
+
+
+de ahi ahora nosotros podremos manejar todos los estados correspondientes
+y funciones get, post, put, delete y con eso terminamos todo el crud para nuestro purewba tecnica con react y nodejs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

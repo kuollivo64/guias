@@ -1,0 +1,81 @@
+PARA UN CRUD EN ASP.NET CORE MVC SE NECESITA LOS SIGUIENTES PAQUETES NUGET
+
+BUSCAMOS : => ENTIY FRAMEWORK
+
+INSTALAMOS LOS SIGUIENTES
+
+FRAMEWORKCORE.SQLSERVER
+FRAMEWORKCORE.TOOLS
+
+AHORA NOSTROS NOS CREAMOS NUESTRA BASE DE DATOS 
+
+CREATE DATABASE prueba;
+use prueba;
+
+CREAMOS NUESTRA TABLA
+
+create table usuario (
+	id int identity(1,1) primary key,
+	nombre varchar(50),
+	email varchar(50),
+	fecha date,
+	estado boolean,
+)
+
+verificamos su existencia
+
+SELECT * FROM usuario;
+
+AHORA NOS VAMOS A VISUAL Y NOS VAMOS HERRAMIENTAS > ADMINISTRADOR DE PAQUETE NUGET -> CONSOLA DE ADMINISTRADOR DE PAQUETES
+
+ahora abrimos la consolo de paquetes nugets y escribimos
+
+Scaffold-DbContext "server=localhost; database=prueba; integrated security=true; encrypt=false;" Microsoft.EntityFrameworkCore.SqlServer -OutPutDir Models
+
+de ahi se nos crea toda la linea de coneccion y tambien de modelos en relacion a la tabla 
+
+de ahi nos vamos al articulo 723263 para ver la sigueinte configuracion 
+link: https://learn.microsoft.com/es-es/ef/core/miscellaneous/connection-strings
+
+//error al ejecutar el generador de codigos seleccionado: No database provider has been configured for this DbContext.OnConfiguring method or by using " AddDbContext" on the apllication service " AddDbContext" is used, then also ensure that your DbContext type accepts a DbContextOptions <TContext> object in its constructor and passes it to the base constructor for DbContext
+
+NOS VAMOS AL appsettings.json para agregar nuestra cadena de conexcion 
+
+  "ConnectionStrings": {
+    "conexion": "cadena de conexcion que se encuentra en context"
+  },
+
+para eso nos vamos al context de la aplicacion que se encuentra en la carpeta models
+
+ahi nos encontraremos con el metodo onConfig y lo modificamos asi 
+	if (!optionsBuilder.IsConfigured)
+        {
+            //optionsBuilder.UseSqlServer("tu_cadena_de_conexion");
+        }
+
+
+ahi encontraremos un codigo comentado no te preocupes eso lo llevaremos al program.cs donde ahora nos iremos
+
+en en link debajo de la linea de conexcion nos copiarmeos el sigueinte codigo que referencia la conexcion
+
+services.AddDbContext<BloggingContext>(options =>
+        options.UseSqlServer(Configuration.GetConnectionString("BloggingDatabase")));
+
+en el program.cs antes del var app = builder.Build(); pegamos el codigo
+
+builder.Services.AddDbContext<DbcrudcoreContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("conexion")));
+
+ y con eso ya tenemos configurado la cadena de conexcion ahora nos toca hacer los controladore 
+
+
+carpeta Controller->clikc derecho -> controlador -> Controlador MVC con Entity Framework
+
+de ahi escogemos el modelo y el contexto de base de datos 
+
+pero ahora no te olvides entrar a a carpeta shared y entrar al layout y agregar la capa usuarios 
+<li class="nav-item">
+    <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index">Usuarios</a>
+</li>
+
+y con eso estaria listo todo :)

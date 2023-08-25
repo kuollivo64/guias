@@ -1,0 +1,177 @@
+PARA UN CRUD EN PHP NATIVO ES ALGO SENCILLO PERO NO DE FIAR RECUERDA ESO
+
+1 paso crear la coneciopn de base de datos por defecto trabaja con MYSQL
+antes de esto ya deberias tener una base de datos creada con una tabla
+
+<?php
+$servername = "";
+$username = "";
+$password = "";
+$dbname = "";
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if($conn->connect_error) {
+die("Conecion Fallida " . $conn->connect_error);
+}
+?>
+
+2 paso crear el index para ver la lista de datos
+
+<?php
+include_once("config.php");
+
+$sql = "SELECT * FROM personas";
+
+$data = $conn->query($sql);
+
+?>
+
+html
+	
+body
+
+h2 Lista de Personas 
+<a href="create.php"/>Crear Persona</a>
+
+table border="1"
+tr
+td Id
+td Nombre
+td Apellido
+td Fecha
+/tr
+
+<?php
+if($data->num_rows > 0){
+while($row = $data->fetch_assoc()){
+echo "<td>". $row["id"] ."</td>";
+echo "<td>". $row["nombre"] ."</td>";
+echo "<td>". $row["apellido"] ."</td>";
+echo "<td>". $row["fecha"] ."</td>";
+echo "<td> <a href="edit.php?id=". $row["id"] .">Editar</a>" . "|" . "<a href="delete.php?id=". $row["id"] .">Eliminar</a>";
+}
+}
+/tr
+?>
+/table
+
+
+
+/body
+	
+/html
+
+
+
+3 ahora creamos lo dificil en esencia es el de editar pero primero crearemos el create.php
+
+
+<?php
+
+include_once("config.php");
+if($_SERVE["REQUEST_METHOD"] === "POST"){
+$nombre = $_POST["nombre"]; 
+$apellido = $_POST["apellido"]; 
+$fecha = $_POST["fecha"];
+
+$sql = "INSER INTO persona (nombre, apellido, fecha) VALUES ('$nombre','$apellido','$fecha')";
+
+if($conn->query($sql) === TRUE){
+header("location: index.php");
+}else{
+echo "Error";
+}
+
+}
+
+?>
+
+html
+body
+form method="POST"
+	input type=text name="nombre"
+	input type=text name="apellido"
+	input type=date name="fecha"
+	button type=submit AGREGAR
+/form
+<a href="index.php">Volver</a>
+/body
+/html
+
+
+4 nos toca crear el edit 
+
+
+<?php
+
+$id = $_GET["id"];
+
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+$nombre = $_POST["nombre"]; 
+$apellido = $_POST["apellido"]; 
+$fecha = $_POST["fecha"];
+
+$sql = " UPDATE persona SET nombre='$nombre', apellido='$apellido', fecha='$fecha' WHERE id='$id'";
+
+if($conn->query($sql) === TRUE){
+header("location: index.php");
+}else{
+echo "ERRO";
+}
+
+}
+
+$sql = "SELECT * FROM persona";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+?>
+
+form method ="POST"
+
+input type=text name=nombre value="<?php echo $row["nombre"] ?>"
+input type=text name=apellido value="<?php echo $row["apellido"] ?>"
+input type=text name=fecha value="<?php echo $row["fecha"] ?>"
+button type=submit EDITAR
+
+<a href="index.php">VOLVER ATRAS</a>
+
+
+5 PASO EL DELETE
+
+<?php
+
+include_once("config.php");
+
+$id = $_GET["id"];
+
+$sql = " DELETE FROM persona WHERE id='$id' ";
+
+if($conn->query($sql) === TRUE){
+header("location: index.php");
+}else{
+echo "ERROR"
+}
+
+?>
+
+
+y ya esta el crud mas rapido
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

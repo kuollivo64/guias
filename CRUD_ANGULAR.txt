@@ -1,0 +1,105 @@
+ms-report.zip
+web-report_2.zip
+
+
+-------------------ANGULAR - CRUD----------------------
+1.- ng new [name_project] 
+	- Nos pregunta si queremos ROUTER
+	- Nos pregunta que estilos queremos en nuestro caso CSS mas directo 
+	- Y despues se nos intalara todo lo necesario hay que esperar!!
+	-- OJO ESTE PASO TARDARA DEMASIADO CUIDADO 10minutos
+WARN: Al parecer es mejor trabajar con MaterialAngular 
+2.- ahora instalamos lo que es angular material con:
+	- ng add @angular/material 
+	- esto tardara unos :[5min]
+	- ahora nos dira si queremos conpartir nuestro codigo le didicimos NO
+	- ahora nos pedira que si queremos instalar el paquete decimos que YES
+	- ahora nos pedira un tema escogemos cualquiera pero en caso escogemos INDIGO-PINK
+	- agregamos los estilos y animaciones 
+	WARN: esto tarda demasiado encerio demasiado es re lento no se si es mi internet o es NG
+3.- Ahora trabajaremos las logicas para los servicios API en nuestro caso estariamos manejando NODEJS COMO BACKEND
+	- ante necesitamos entrar a la carpeta app y dentro crear una carpeta Interfaces
+	- para esto nosotros primero creamos las interfaces con el comando 
+		* ng generate interface [ruta de salida]
+	- en esta se crea por decirlo asi los datos con tipo de datos como interfas
+4.- Ahora tenemos que configurar los servicios para eso necesitamos crear un endpoint en los enviorments hay que averigura
+5.- Mientras nos crearemos lo que es una carpeta services dentro de la carpeta APP
+	- ahora ejecutamos un comando para que esta nos cree el serivico para la entidad
+		* ng g s Serivices/[nombre_entidad]
+	- eliminamos lo que es los archovos de pureba que se denotan con lo que es baso petry
+	- ahora nosotros tenemos que importa los siguiente ayudas
+		* import { HttpClient } from '@angular/common/http';
+		* //INPORTAMOS EL ENDPOINT COMO VARIABLE GLOBAL
+		* import { Observable } from 'rxjs';
+		* import { Empleado } from './../Interfaces/empleado';
+	- Ahora dentro de esto lo que hacemos es crear los metodos CRUD 
+		
+		constructor( private http:HttpClient ) { }		
+
+		getLista():Observable<Empleado[]>{
+		    return this.http.get<Empleado[]>(`${this.apiURL}`); 
+		}
+
+		add(modelo:Empleado):Observable<Empleado>{
+		    return this.http.post<Empleado>(`${this.apiURL}`, modelo);
+		}
+
+  		update(idEmpleado:number ,modelo:Empleado):Observable<Empleado>{
+    			return this.http.post<Empleado>(`${this.apiURL}/${idEmpleado}`, modelo);
+  		}
+
+  		delete(idEmpleado:number): Observable<void>{
+	    		return this.http.delete<void>(`${this.apiURL}/${idEmpleado}`);
+  		}
+
+
+	- CON ESTO TERMINAMOS LA PARTE DE LA CONFIGURACION DE LOS SERVICIO AHORA NOS METEMOS DE LLENO AL PROBLEMA GRANDE QUE ES LOS FORMULARIOS
+
+6.- FORMULARIOS nos vamos directo a lo que es la carpeta app y nos vamos a lo que es app.module
+	- ahi dentro lo que nosotros vemos mas complicado es importar todos los paquetes necesarios para material UI como ser botonoes inputs y todo lo mismos
+	  se insertan dentro de lo que es el import acontinuacion veremos los import necesarios para trabajar:
+
+		/** IMPORTS NECESARIOS */
+//1
+import { ReactiveFormsModule } from '@angular/forms';
+//2
+import { HttpClientModule } from '@angular/common/http';
+//3
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+//4 
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+//5
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+//6
+import { MatIconModule } from '@angular/material/icon';
+//7
+import { MatDialogModule } from '@angular/material/dialog';
+//8
+import { MatGridListModule } from '@angular/material/grid-list';
+
+	- Estos son todos los import para ahora todos son de material pero ten en cuenta que es para un proyecto completo por decirlo 
+	  pero antes para las fechas necesitamos lo que es dos paquetes como ser 	
+		* npm i moment
+		* npm install @angular/material-moment-adapter@^15.2.9
+INFO: AHORA COMENZAMOS CON LOS FORM EN UI 
+
+7.- creamos el list para listar los datos de los empleados
+	-para esto lo que necesitamos es poder irnos al app.module.html y eliminar todo lo que viene por defecto 
+	 ahi nosotros ponemos una etiqueta que diga hola mundo y despues ejecutamos el proyecto 
+	con el comando 
+		* ng serve --open
+
+	WARN: para ser mas rapido es mejor copiar los componentes existentes en material.com
+	- Ahi nos agarraremos de 2 elementos table pagination y filtering para nuestro CRUD
+	
+
+
+
+
+
